@@ -1,0 +1,29 @@
+{
+  "mainFile": "", 
+  "use-tabs": false, 
+  "venv": "", 
+  "relatedProjects": [], 
+  "name": "Seccion5Grficos", 
+  "license": "GNU General Public License v3", 
+  "url": "", 
+  "pythonPath": "C:/Python34/python.exe", 
+  "preExecScript": "", 
+  "additional_builtins": [], 
+  "programParams": "", 
+  "indentation": 4, 
+  "PYTHONPATH": "", 
+  "supported-extensions": [
+    ".py", 
+    ".html", 
+    ".jpg", 
+    ".png", 
+    ".ui", 
+    ".css", 
+    ".json", 
+    ".js", 
+    ".ini"
+  ], 
+  "project-type": "pygame", 
+  "postExecScript": "", 
+  "description": "En este proyecto se a\u00f1aden distintos ejemplos intoductorios de la creacion de graficos en python utilizando la biblioteca pygame. Los ejercicios presentados corresponden a la seccion 05 del curso de Programa Juegos Arcade con Python y Phygame"
+}
