@@ -9,6 +9,9 @@ BLACK = (0, 0, 0)
 sizeSquare = 40
 px = int(eval(input("Coordenada en X: ")))
 py = int(eval(input("Coordenada en Y: ")))
+
+x = 0
+y = 0
 pygame.init()
 size = (600, 600)
 screen = pygame.display.set_mode(size)
@@ -27,11 +30,15 @@ while not gameOver:
     for i in range(1, size[0], 40):
         for j in range(1, size[1], 40):
             pygame.draw.rect(screen, blueP, [i, j, 38, 38], 0)
-            if py == Ty:
-                py = j
+            if py == 0:
+                y = 1
+            elif py == Ty:
+                y = j
             Ty += 1
-        if px == Tx:
-            px = i
+        if px == 0:
+            x = 1
+        elif px == Tx:
+            x = i
         Texto = Fuente.render(str(Tx), True, greenP)
         screen.blit(Texto, [i, 2])
         if Tx != 0:
@@ -39,7 +46,7 @@ while not gameOver:
         Tx += 1
         Ty = 0
     colAl = (random.randrange(1, 255), random.randrange(1, 255), random.randrange(1, 255))
-    pygame.draw.rect(screen, colAl, [px, py, 38, 38], 0)
+    pygame.draw.rect(screen, colAl, [x, y, 38, 38], 0)
     pygame.display.flip()
     clock.tick(5)
 pygame.quit()
