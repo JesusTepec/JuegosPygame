@@ -1,5 +1,6 @@
 #Introducción a los grafico en python
 #Dibujando escenario
+#autor: Jesús Tepec
 
 import pygame
 import random
@@ -13,11 +14,12 @@ GrisCastillo = (158, 158, 158)
 NEGRO = (2, 3, 3)
 ROJO = (255, 0, 0)
 CAFE = (90, 50, 15)
+TRUENO = (19, 45, 77)
 
 centro = []
 for i in range(15):
-    radio = random.randrange(0, 3)
-    centro.append([random.randrange(50, 390), random.randrange(0, 300), radio])
+    radio = 1
+    centro.append([random.randrange(1, 390), random.randrange(0, 300), radio])
 
 pygame.init()
 Dimensiones = (400, 500)
@@ -26,6 +28,7 @@ pygame.display.set_caption("Escenario")
 
 Terminar = False
 reloj = pygame.time.Clock()
+num = 0
 
 while not Terminar:
     for Evento in pygame.event.get():
@@ -35,7 +38,11 @@ while not Terminar:
     #La lógica del juego
     #Codigo de dibujo
     Pantalla.fill((255, 255, 255))
-    pygame.draw.rect(Pantalla, AZULNOCHE, [0, 0, 400, 300], 0)
+    num += 1
+    if (num % 200) == 0:
+        pygame.draw.rect(Pantalla, AZULNOCHE, [0, 0, 400, 300], 0)
+    else:
+        pygame.draw.rect(Pantalla, TRUENO, [0, 0, 400, 300], 0)
     pygame.draw.rect(Pantalla, VERDEPASTO, [0, 300, 400, 300], 0)
     pygame.draw.circle(Pantalla, BLANCO, [25, 25], 20, 0)
     pygame.draw.circle(Pantalla, GRIS, [15, 15], 4, 1)
@@ -78,5 +85,5 @@ while not Terminar:
     Texto = Fuente.render("Castle of Tepec", True, ROJO)
     Pantalla.blit(Texto, [250, 10])
     pygame.display.flip()
-    reloj.tick(20)
+    reloj.tick(60)
 pygame.quit()
