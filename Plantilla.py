@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import pygame
 import math
-import random
+
 
 def gradToRad(grados):
     return (grados * math.pi) / 180
@@ -16,9 +16,9 @@ AMARILLO = (255, 255, 0)
 pygame.init()
 
 # Establecemos las dimensiones de la pantalla [largo,altura]
-dimensiones = [700, 500]
+dimensiones = [300, 300]
 pantalla = pygame.display.set_mode(dimensiones)
-pygame.display.set_caption("Mi Primer juego en pygame")  # Titulo
+pygame.display.set_caption("--------Arcos------")  # Titulo
 
 #El bucle se ejecuta hasta que el usuario hace click sobre el botón de cierre.
 juego_terminado = False
@@ -43,15 +43,8 @@ while juego_terminado is False:
     #pygame.draw.rect(pantalla, ROJO, [150, 50, 400, 400])
     #pygame.draw.circle(pantalla, AZUL, [350, 250], 200, 2)
     #pygame.draw.line(pantalla, VERDE, [10, 10], [650, 470], 4)
-    #pygame.draw.polygon(pantalla, ROJO, [[350, 10], [20, 400], [680, 400], [350, 10]], 1)
-    #pygame.draw.arc(pantalla, AZUL, [150, 50, 400, 400], gradToRad(0), gradToRad(180), 2) 
     #pygame.draw.ellipse(pantalla, COLOR, [50, 50, 600, 400])
-    pos = pygame.mouse.get_pos()
-    pres = pygame.mouse.get_pressed()
-    if pres[0]==1:
-        posCircle = pos
-    pygame.draw.circle(pantalla, ROJO, posCircle, 20, 0)
-    pygame.draw.circle(pantalla, ROJO, pos, 10, 0)
+    pygame.draw.arc(pantalla, ROJO, [50, 20, 200, 200], 0, 2 * math.pi)
     # --- Avanzamos y actualizamos la pantalla con lo que hemos dibujado.
     pygame.display.flip()
 
