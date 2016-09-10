@@ -55,7 +55,7 @@ while juego_terminado is False:
     # --- EL CÓDIGO DE DIBUJO DEBERÍA IR AQUÍ
     #pantalla.fill(BLANCO)
 
-    pygame.draw.rect(pantalla, ROJO, [x, y, 5,5], 0)
+    pygame.draw.rect(pantalla, ROJO, [x, y, 5, 5], 0)
   #  x += v_x
     t += 0.1
     # --- Avanzamos y actualizamos la pantalla con lo que hemos dibujado.

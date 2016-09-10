@@ -16,17 +16,17 @@ ROJO = (255, 0, 0)
 CAFE = (90, 50, 15)
 TRUENO = (19, 45, 77)
 
-Dimensiones = (500, 600)
+Dimensiones = (500, 500)
 
 
 def dibujar_castillo(pantalla, pos):
     for x in range(0, 70, 20):
         pygame.draw.rect(pantalla, GrisCastillo, [290 + x, 220, 10, 10])
         pygame.draw.rect(pantalla, NEGRO, [290 + x, 220, 10, 10], 1)
-    pygame.draw.rect(pantalla, GrisCastillo, [250, 200, 40, 105], 0)
+    pygame.draw.rect(pantalla, GrisCastillo, [250, 200, 40, 105], 0)  # pilar iz
     pygame.draw.rect(pantalla, NEGRO, [250, 200, 40, 105], 2)
     pygame.draw.rect(pantalla, NEGRO, [262, 210, 16, 16], 0)
-    pygame.draw.rect(pantalla, GrisCastillo, [290, 230, 70, 75], 0)
+    pygame.draw.rect(pantalla, GrisCastillo, [290, 230, 70, 75], 0)#pilar der
     pygame.draw.rect(pantalla, NEGRO, [290, 230, 70, 75], 2)
     pygame.draw.rect(pantalla, GrisCastillo, [360, 200, 40, 105], 0)
     pygame.draw.rect(pantalla, NEGRO, [360, 200, 40, 105], 2)
@@ -40,7 +40,7 @@ def dibujar_castillo(pantalla, pos):
     pygame.draw.circle(pantalla, CAFE, [325, 270], 13, 0)
 
 
-def dibujar_fondo(pantalla, pos):
+def dibujar_fondo(pantalla):
     ancho = Dimensiones[0]
     alto = Dimensiones[1]
     h1 = Dimensiones[1] / 2 + 50
@@ -50,6 +50,7 @@ def dibujar_fondo(pantalla, pos):
     for y in range(int(h2) + 100, alto, 7):
         for x in range(0, ancho, 4):
             pygame.draw.line(pantalla, VERDE, [x, y + 5], [x + 2, y], 1)
+    return h2+100
 
 
 def dibujar_luna(pantalla, pos):
@@ -108,13 +109,13 @@ def main():
                 game_over = True
         pantalla.fill((255, 255, 255))
         #---Fondo------
-        dibujar_fondo(pantalla, [0, 0])
+        y_pos = dibujar_fondo(pantalla)
         #---Luna-------
         dibujar_luna(pantalla, [25, 25])
         #---Luvia------
         dibujar_lluvia(pantalla, [390, 300], listaPuntos)
         #---Castillo---
-        dibujar_castillo(pantalla, [400, 300])
+        dibujar_castillo(pantalla, [400, y_pos])
 
         pygame.display.flip()
         reloj.tick(60)

@@ -1,6 +1,6 @@
 #Ejemplo 1 - circulo cae
 import pygame
-import math
+
 
 
 # Definir Colores
