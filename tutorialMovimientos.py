@@ -8,6 +8,7 @@ BLANCO = (255, 255, 255)
 CUERPO = (60, 250, 40)
 NEGRO = (0, 0, 0)
 
+
 def gToR(grados):
     #Converir grados a radianes (tambien se puede usar Math)
     return (grados * math.pi) / 180
