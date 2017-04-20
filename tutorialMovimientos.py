@@ -57,7 +57,7 @@ def main():
             t = 0
         x, y = xyCircunferencia(math.radians(t), [200, 100], 90)
         pantalla.fill(NEGRO)
-        dibujaAlien(pantalla, x, y)
+        pygame.draw.circle(pantalla, ROJO, [x, y], 50)
         pygame.display.flip()
         reloj.tick(20)
     pygame.quit()

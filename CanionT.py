@@ -11,11 +11,6 @@ AZUL = (127, 181, 181)
 dimensiones = [400, 300]
 
 
-def gToR(grados):
-    #Converir grados a radianes (tambien se puede usar Math.radians)
-    return (grados * math.pi) / 180
-
-
 def dibujaCanion(pantalla, xy, angulo):
     x, y = xy
     CoordCanion = puntosCanion(xy, angulo, 30, 18)
@@ -49,9 +44,8 @@ def main():
     av = 1
     xv = 1
     yv = 1
+    y, x = [1, 1]
     disparo = False
-    CoordCanion = puntosCanion([200, dimensiones[1] - 10], 290, 30, 18)
-    x, y = CoordCanion[0]
     while juego_terminado is False:
         for evento in pygame.event.get():
             if evento.type == pygame.QUIT:
@@ -61,7 +55,9 @@ def main():
             av *= -1
         pantalla.fill(AZUL)
         dibujaCanion(pantalla, [200, dimensiones[1] - 10], a)
-        if a > 290:
+        if a == 290:
+            CoordCanion = puntosCanion([200, dimensiones[1] - 10], a, 30, 18)
+            x, y = CoordCanion[0]
             disparo = True
 
         if x > 395 or x < 5:
