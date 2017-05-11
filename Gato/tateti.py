@@ -37,10 +37,10 @@ def quienComienza():
 
 def jugarDeNuevo():
     print('Desas volver a jugar? (si/no)?')
-    return input().lower().startsith('s')
+    return input().lower().startswith('s')
 
 def hacerJugada(tablero, letra, jugada):
-    tablero(jugada) = letra
+    tablero[jugada] = letra
 
 
 def esGanador(tablero, letra):
@@ -69,7 +69,7 @@ def hayEspacioLibre(tablero, jugada):
 
 def obtenerJugadaJugador(tablero):
     jugada = ' '
-    while jugado not in '1 2 3 4 5 6 7 8 9'.split() or not hayEspacioLibre(tablero, int(jugada)):
+    while jugada not in '1 2 3 4 5 6 7 8 9'.split() or not hayEspacioLibre(tablero, int(jugada)):
         print('Cual es tu proxima jugada? (1-9)')
         jugada = input()
     return int(jugada)
@@ -82,9 +82,9 @@ def elegirAzarDeLista(tablero, listaJugada):
     if len(jugadasPosibles) != 0:
         return random.choice(jugadasPosibles)
     else:
-        return none
+        return None
 
-def obtenerJugadaComputadore(tablero, letraComputadora):
+def obtenerJugadaComputadora(tablero, letraComputadora):
     if letraComputadora == 'X':
         letraJugador = 'O'
     else:
@@ -103,3 +103,57 @@ def obtenerJugadaComputadore(tablero, letraComputadora):
             hacerJugada(copia, letraJugador, i)
             if esGanador(copia, letraJugador):
                 return i
+    jugada = elegirAzarDeLista(tablero, [1, 3, 7, 9])
+    if jugada != None:
+        return jugada
+    if hayEspacioLibre(tablero, 5):
+        return 5
+    return elegirAzarDeLista(tablero, [2, 4, 6, 8])
+
+def tableroCompleto(tablero):
+    for i in range(1, 10):
+        if hayEspacioLibre(tablero, i):
+            return False
+    return True
+
+print('Bienvenido al juego del gato')
+while True:
+    elTablero = [' '] * 10
+    letraJugador, letraComputadora = ingresaLetraJugador()
+    turno = quienComienza()
+    print(turno + ' ira primero.')
+    juegoEnCurso = True
+
+    while juegoEnCurso:
+        if turno == 'El jugador':
+            dibujarTablero(elTablero)
+            jugada = obtenerJugadaJugador(elTablero)
+            hacerJugada(elTablero, letraJugador, jugada)
+            if esGanador(elTablero, letraJugador):
+                dibujarTablero(elTablero)
+                print('Felicidades, has ganado!')
+                juegoEnCurso = False
+            else:
+                if tableroCompleto(elTablero):
+                    dibujarTablero(elTablero)
+                    print('Es un empate!')
+                    break;
+                else:
+                    turno = 'La computadora'
+        else:
+            jugada = obtenerJugadaComputadora(elTablero, letraComputadora)
+            hacerJugada(elTablero, letraComputadora, jugada)
+
+            if esGanador(elTablero, letraComputadora):
+                dibujarTablero(elTablero)
+                print('La computadora te ha vencido! Has perdido.')
+                juegoEnCurso = False
+            else:
+                if tableroCompleto(elTablero):
+                    dibujarTablero(elTablero)
+                    print('Es un empate!')
+                    break
+                else:
+                    turno = 'El jugador'
+    if not jugarDeNuevo():
+        break
