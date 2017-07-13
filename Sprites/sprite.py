@@ -4,6 +4,7 @@ import random
 NEGRO = (0, 0, 0)
 BLANCO = (255, 255, 255)
 AZUL = (0, 0, 255)
+FONDO = (43, 109, 216)
 
 class Bloque(pygame.sprite.Sprite):
 
@@ -29,9 +30,9 @@ class Bloque(pygame.sprite.Sprite):
 		if self.rect.bottom >= self.limite_inferior or self.rect.top <= self.limite_superior:
 		    self.cambio_y *= -1
 
-def dibujarTexto(screen, texto):
+def dibujarTexto(screen, texto, pos):
 	text = fuente.render(texto, 1, AZUL)
-	screen.blit(text, [660, 30])
+	screen.blit(text, pos)
 
 
 pygame.init()
@@ -45,7 +46,11 @@ listaBloques = pygame.sprite.Group()
 listaSprites = pygame.sprite.Group()
 imagePersonaje = "image/ufoRed.png";
 imageEnergia = "image/powerupYellow_bolt.png";
+imageEnemigo = "image/meteorGrey_big4.png";
 sonidoEnergia = pygame.mixer.Sound("sound/coin2.wav")
+pygame.mixer.music.load('sound/Hall_of_the_Mountain_King.ogg')
+pygame.mixer.music.set_endevent(pygame.constants.USEREVENT)
+pygame.mixer.music.play()
 
 for i in range(50):
 	bloque = Bloque(imageEnergia, 20, 15)
@@ -64,19 +69,30 @@ for i in range(50):
 	listaSprites.add(bloque)
 
 protagonista = Bloque(imagePersonaje, 20, 15)
+enemigo = Bloque(imageEnemigo, 20, 15) 
+enemigo.cambio_x = 12
+enemigo.cambio_y = 12
+enemigo.limite_izquierdo = 0
+enemigo.limite_superior = 0
+enemigo.limite_derecho = dimensiones[0]
+enemigo.limite_inferior = dimensiones[1]
 listaSprites.add(protagonista)
+listaSprites.add(enemigo)
 
 game_over = False
 
 reloj = pygame.time.Clock()
 marcador = 0
+perdiste = 0
 
 while not game_over:
 	for evento in pygame.event.get():
 		if evento.type == pygame.QUIT:
 			game_over = True
+		elif evento.type == pygame.constants.USEREVENT:
+			pygame.mixer.music.play()
 	
-	pantalla.fill(BLANCO)
+	pantalla.fill(FONDO)
 
 	pos = pygame.mouse.get_pos()
 
@@ -84,11 +100,20 @@ while not game_over:
 	protagonista.rect.y = pos[1]
 
 	listaImpactos = pygame.sprite.spritecollide(protagonista, listaBloques, True)
+	if pygame.sprite.collide_rect(protagonista, enemigo):
+		listaSprites.empty()
+		listaBloques.empty()
+		perdiste = True
+	if perdiste:
+		dibujarTexto(pantalla, "Game Over", [380, 300])
 	for bloque in listaImpactos:
 		sonidoEnergia.play()
-		marcador +=1
+		marcador += 1
+	if marcador == 50:
+		dibujarTexto(pantalla, "You Win", [360, 300])
 	listaBloques.update()
-	dibujarTexto(pantalla, str(marcador))
+	enemigo.update()
+	dibujarTexto(pantalla, str(marcador), [760, 30])
 	listaSprites.draw(pantalla)
 
 	reloj.tick(60)
