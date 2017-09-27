@@ -28,6 +28,10 @@ def colorAleatorio():
     g = random.randrange(255)
     b = random.randrange(255)
     return (r, g, b)
+
+def posicionAleatoria():
+    return [random.randrange(700), random.randrange(500)]
+
 pygame.init()
 
 def reasignaPosicion(i):
@@ -47,7 +51,8 @@ hecho = False
 reloj = pygame.time.Clock()
 
 lista_particulas = []
-
+x, y = posicionAleatoria()
+lista_particulas.append(creaParticulas(x, y))
 while not hecho:
     for evento in pygame.event.get():
         if evento.type == pygame.QUIT:
@@ -74,10 +79,12 @@ while not hecho:
                 lista_particulas[i].pop(j)
             j += 1
         if(len(sub_lista) == 0):
-            lista_particulas.pop(i)
+        #    lista_particulas.pop(i)
+            x, y = posicionAleatoria()
+            lista_particulas[i] = creaParticulas(x, y)
         i += 1
 
     #---
     pygame.display.flip()
-    reloj.tick(30)
+    reloj.tick(60)
 pygame.quit()

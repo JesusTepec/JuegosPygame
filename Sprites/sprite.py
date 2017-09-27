@@ -39,7 +39,7 @@ pygame.init()
 dimensiones = [900, 700]
 
 pantalla = pygame.display.set_mode(dimensiones)
-pygame.mouse.set_visible(False);
+#pygame.mouse.set_visible(False);
 fuente = pygame.font.SysFont("Arial", 25)
 
 listaBloques = pygame.sprite.Group()
@@ -96,8 +96,8 @@ while not game_over:
 
 	pos = pygame.mouse.get_pos()
 
-	protagonista.rect.x = pos[0]
-	protagonista.rect.y = pos[1]
+	protagonista.rect.x = pos[0] * 1.3
+	protagonista.rect.y = pos[1] * 1.3
 
 	listaImpactos = pygame.sprite.spritecollide(protagonista, listaBloques, True)
 	if pygame.sprite.collide_rect(protagonista, enemigo):
