@@ -5,8 +5,7 @@ ROJO = (232, 47, 28)
 
 
 def colisiono(mouse, objeto):
-    if (mouse[0] > objeto[0] and mouse[0] < objeto[0] + objeto[2]) and
-    (mouse[1] > objeto[1] and mouse[1] < objeto[1] + objeto[3]):
+    if (mouse[0] > objeto[0] and mouse[0] < objeto[0] + objeto[2]) and (mouse[1] > objeto[1] and mouse[1] < objeto[1] + objeto[3]):
         return True
     return False
 
