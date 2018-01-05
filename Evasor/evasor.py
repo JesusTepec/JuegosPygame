@@ -1,20 +1,16 @@
-'''https://www.gamedeveloperstudio.com/ - Game Developer Studio
-https://freesound.org -level failed
-'''
+
 
 import pygame
 import random
 from pygame.locals import *
 
-ANCHOVENTANA = 600
-ALTOVENTANA = 600
-COLORVENTANA = (250, 240, 40)
-COLORFONDO = (43, 255, 46)
+
+ventana = {'ancho': 600, 'alto': 600}
+COLOR_FUENTE = (250, 240, 40)
+COLOR_FONDO = (13, 140, 255)
 FPS = 40
-TAMAÑOMINVILLANO = 10
-TAMAÑOMAXVILLANO = 40
-VELOCIDADMINVILLANO = 1
-VELOCIDADMAXVILLANO = 8
+enemigo = {'sizeMin': 10, 'sizeMax': 40, 'velocidadMin': 1, 'velocidadMax': 8}
+
 TASANUEVOVILLANO = 6
 TASAMOVIMIENTOJUGADOR = 5
 
@@ -39,32 +35,55 @@ def jugadorGolpeaVillano(rectanguloJugador, villano):
 
 
 def dibujarTexto(texto, fuente, superficie, x, y):
-    objetotexto = fuente.render(texto, 1, COLORVENTANA)
+    objetotexto = fuente.render(texto, 1, COLOR_FUENTE)
     rectangulotexto = objetotexto.get_rect()
     rectangulotexto.topleft = (x, y)
     superficie.blit(objetotexto, rectangulotexto)
 
+def pantallaInicial(superficie):
+    superficie.fill(COLOR_FONDO)
+    fuente = pygame.font.SysFont('BM block A15 Normal', 48)
+    dibujarTexto('Evasor', fuente, superficie, (ventana['ancho'] / 3) + 40, (ventana['alto'] / 3))
+    fuente = pygame.font.SysFont('Amazing Kids', 46)
+    dibujarTexto('Presione una tecla para comenzar.', fuente, superficie, (ventana['ancho'] / 3) - 180, (ventana['alto'] / 3) + 50)
 
+
+def main():
+    pygame.init()
+    superficie = pygame.display.set_mode((ventana['ancho'], ventana['alto']))
+    pygame.display.set_caption('Evasor')
+    reloj = pygame.time.Clock()
+    game_over = False
+
+    while not game_over:
+        for evento in pygame.event.get():
+           if evento.type == pygame.QUIT:
+               game_over = True
+        pantallaInicial(superficie)
+        pygame.display.flip()
+        reloj.tick(60)
+    pygame.quit()
+
+if __name__ == "__main__":
+    main()
+
+'''
 pygame.init()
-relojPrincipal = pygame.time.Clock()
 superficieVentana = pygame.display.set_mode((ANCHOVENTANA, ALTOVENTANA))
 pygame.display.set_caption('Esquivador')
+relojPrincipal = pygame.time.Clock()
+
 pygame.mouse.set_visible(False)
 
 fuente = pygame.font.SysFont(None, 48)
 
+## SONIDOS **
 sonidoJuegoTerminado = pygame.mixer.Sound('juegoterminado.wav')
 pygame.mixer.music.load('MainTheme.wav')
 
 imagenJugador = pygame.image.load('parrot.png')
 rectanguloJugador = imagenJugador.get_rect()
 imagenVillano = pygame.image.load('snake.png')
-
-dibujarTexto('Evasor', fuente, superficieVentana, (ANCHOVENTANA / 3)+40, (ALTOVENTANA / 3))
-dibujarTexto('Presione una tecla para comenzar.', fuente, superficieVentana, (ANCHOVENTANA / 3) - 180, (ALTOVENTANA / 3) + 50)
-pygame.display.update()
-esperarTeclaJugador()
-
 
 puntajeMax = 0
 while True:
@@ -130,7 +149,7 @@ while True:
             contadorAgregarVillano += 1
         if contadorAgregarVillano == TASANUEVOVILLANO:
             contadorAgregarVillano = 0
-            tamañoVillano = random.randint(TAMAÑOMINVILLANO, TAMAÑOMAXVILLANO)
+            tamañoVillano = random.randint(TAMAÑOMINVILLANO, SIZE_MAX_VILLANO)
             nuevoVillano = {'rect': pygame.Rect(random.randint(0, ANCHOVENTANA-tamañoVillano), 0 - tamañoVillano, tamañoVillano, tamañoVillano), 'velocidad': random.randint(VELOCIDADMINVILLANO, VELOCIDADMAXVILLANO),'superficie':pygame.transform.scale(imagenVillano, (tamañoVillano, tamañoVillano))}
             villanos.append(nuevoVillano)
 
@@ -194,4 +213,10 @@ while True:
     pygame.display.update()
     esperarTeclaJugador()
 
-    sonidoJuegoTerminado.stop()
+    #sonidoJuegoTerminado.stop()
+'''
+
+'''
+https://www.gamedeveloperstudio.com/ - Game Developer Studio
+https://freesound.org -level failed
+'''
