@@ -5,7 +5,7 @@ import random
 from pygame.locals import *
 
 
-ventana = {'ancho': 600, 'alto': 600}
+ventana = {'ancho': 600, 'alto': 800}
 COLOR_FUENTE = (250, 240, 40)
 COLOR_FONDO = (13, 140, 255)
 FPS = 40
@@ -13,18 +13,6 @@ enemigo = {'sizeMin': 10, 'sizeMax': 40, 'velocidadMin': 1, 'velocidadMax': 8}
 
 TASANUEVOVILLANO = 6
 TASAMOVIMIENTOJUGADOR = 5
-
-def esperarTeclaJugador():
-    game_over = False
-    while not game_over:
-        for evento in pygame.event.get():
-            if evento.type == pygame.QUIT:
-                game_over = True
-            if evento.type == pygame.KEYDOWN:
-                if evento.key == pygame.K_ESCAPE:
-                    game_over = True
-                return
-    pygame.quit()
 
 
 def jugadorGolpeaVillano(rectanguloJugador, villano):
@@ -42,24 +30,36 @@ def dibujarTexto(texto, fuente, superficie, x, y):
 
 def pantallaInicial(superficie):
     superficie.fill(COLOR_FONDO)
-    fuente = pygame.font.SysFont('BM block A15 Normal', 48)
-    dibujarTexto('Evasor', fuente, superficie, (ventana['ancho'] / 3) + 40, (ventana['alto'] / 3))
-    fuente = pygame.font.SysFont('Amazing Kids', 46)
-    dibujarTexto('Presione una tecla para comenzar.', fuente, superficie, (ventana['ancho'] / 3) - 180, (ventana['alto'] / 3) + 50)
+    fuente = pygame.font.SysFont('Dimitri Swank', 48)
+    dibujarTexto('Evasor', fuente, superficie, (ventana['ancho'] / 2) - 80, (ventana['alto'] / 3))
+    fuente = pygame.font.SysFont('Quesha', 46)
+    dibujarTexto('Presione una tecla para comenzar.', fuente, superficie, (ventana['ancho'] / 2) - 220, (ventana['alto'] / 3) + 100)
 
 
 def main():
     pygame.init()
     superficie = pygame.display.set_mode((ventana['ancho'], ventana['alto']))
     pygame.display.set_caption('Evasor')
+
+    pygame.mixer.music.load('copycat.wav')
+    #pygame.mixer.music.set_endevent(pygame.constants.USEREVENT)
+
     reloj = pygame.time.Clock()
     game_over = False
+    juego_inicia = False
+    pantallaInicial(superficie)
 
     while not game_over:
         for evento in pygame.event.get():
-           if evento.type == pygame.QUIT:
-               game_over = True
-        pantallaInicial(superficie)
+            if evento.type == pygame.QUIT:
+                game_over = True
+            if evento.type == pygame.KEYDOWN and juego_inicia == False:
+                juego_inicia = True
+                pygame.mixer.music.play()
+        if not juego_inicia:
+            pantallaInicial(superficie)
+        else:
+            superficie.fill(COLOR_FONDO)
         pygame.display.flip()
         reloj.tick(60)
     pygame.quit()
@@ -79,7 +79,7 @@ fuente = pygame.font.SysFont(None, 48)
 
 ## SONIDOS **
 sonidoJuegoTerminado = pygame.mixer.Sound('juegoterminado.wav')
-pygame.mixer.music.load('MainTheme.wav')
+pygame.mixer.music.load('Acrostics.wav')
 
 imagenJugador = pygame.image.load('parrot.png')
 rectanguloJugador = imagenJugador.get_rect()
@@ -219,4 +219,5 @@ while True:
 '''
 https://www.gamedeveloperstudio.com/ - Game Developer Studio
 https://freesound.org -level failed
+https://opengameart.org/content/copycat syncopika
 '''

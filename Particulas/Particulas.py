@@ -5,12 +5,6 @@ import Rectangulo
 FONDO = (14, 16, 30)
 cantidad_particulas = 50
 
-def colorAleatorio():
-    r = random.randrange(255)
-    g = random.randrange(255)
-    b = random.randrange(255)
-    return (r, g, b)
-
 def creaParticulas(x, y):
     particulasLista = []
     for i in range(cantidad_particulas):
@@ -21,14 +15,14 @@ def creaParticulas(x, y):
         particulasLista.append(rectangulo)
     return particulasLista
 
+def colorAleatorio():
+    r = random.randrange(255)
+    g = random.randrange(255)
+    b = random.randrange(255)
+    return (r, g, b)
+
 def posicionAleatoria():
     return [random.randrange(700), random.randrange(500)]
-
-def reasignaPosicion():
-    lista_particulas[i].x = random.randrange(dimensiones[0])
-    lista_particulas[i].move_x = random.randrange(-4, 5)
-    lista_particulas[i].y = random.randrange(dimensiones[1])
-    lista_particulas[i].move_y = random.randrange(-4, 5)
 
 def main():
     """Funcion Principal"""
