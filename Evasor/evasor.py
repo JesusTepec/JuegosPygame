@@ -43,11 +43,15 @@ def main():
 
     pygame.mixer.music.load('copycat.wav')
     #pygame.mixer.music.set_endevent(pygame.constants.USEREVENT)
+    imagenVillano = pygame.image.load('snake.png')
 
+    trucoReversa = trucoLento = False
+    contadorAgregarVillano = 0
     reloj = pygame.time.Clock()
     game_over = False
     juego_inicia = False
     pantallaInicial(superficie)
+    villanos = []
 
     while not game_over:
         for evento in pygame.event.get():
@@ -55,11 +59,20 @@ def main():
                 game_over = True
             if evento.type == pygame.KEYDOWN and juego_inicia == False:
                 juego_inicia = True
-                pygame.mixer.music.play()
+            #    pygame.mixer.music.play()
+        if not trucoReversa and not trucoLento:
+            contadorAgregarVillano += 1
+        if contadorAgregarVillano == TASANUEVOVILLANO:
+            contadorAgregarVillano = 0
+            sizeEnemigo= random.randint(enemigo['sizeMin'], enemigo['sizeMax'])
+            nuevoVillano = {'rect': pygame.Rect(random.randint(0, ventana['ancho'] - sizeEnemigo), 0 - sizeEnemigo, sizeEnemigo, sizeEnemigo), 'velocidad': random.randint(enemigo['velocidadMax'], enemigo['velocidadMax']), 'superficie':pygame.transform.scale(imagenVillano, (sizeEnemigo, sizeEnemigo))}
+            villanos = [].append(nuevoVillano)
         if not juego_inicia:
             pantallaInicial(superficie)
         else:
             superficie.fill(COLOR_FONDO)
+            for v in villanos:
+                superficieVentana.blit(v['superficie'], v['rect'])
         pygame.display.flip()
         reloj.tick(60)
     pygame.quit()
@@ -151,7 +164,7 @@ while True:
             contadorAgregarVillano = 0
             tamañoVillano = random.randint(TAMAÑOMINVILLANO, SIZE_MAX_VILLANO)
             nuevoVillano = {'rect': pygame.Rect(random.randint(0, ANCHOVENTANA-tamañoVillano), 0 - tamañoVillano, tamañoVillano, tamañoVillano), 'velocidad': random.randint(VELOCIDADMINVILLANO, VELOCIDADMAXVILLANO),'superficie':pygame.transform.scale(imagenVillano, (tamañoVillano, tamañoVillano))}
-            villanos.append(nuevoVillano)
+            villanos = [].append(nuevoVillano)
 
         # Mueve el jugador.
         if moverIzquierda and rectanguloJugador.left > 0:
