@@ -43,3 +43,8 @@ Temporary Items
 .apdisk
 
 *.pyc
+*.iml
+.idea/misc.xml
+*.h
+venv/
+*.xml
