@@ -24,12 +24,6 @@ def rectCollider(objeto1, objeto2):
     if objeto2[0] + objeto2[2] > objeto1[0] and objeto2[0] < objeto1[0] + objeto1[2] and objeto2[1] + objeto2[3] > objeto1[1] and objeto2[1] < objeto1[1] + objeto1[3]:
         colisiono = True
     return colisiono
-'''    if objeto2[0] < objeto1[0] and objeto2[0] + objeto2[2] > objeto1[0] + objeto1[2] and objeto2[1] < objeto1[1] and objeto2[1] + objeto2[3] > objeto1[1] + objeto1[3]:
-        colisiono = True
-        print("#########2")
-    if objeto1[0] < objeto2[0] and objeto1[0] + objeto1[2] > objeto2[0] + objeto2[2] and objeto1[1] < objeto2[1] and objeto1[1] + objeto1[3] > objeto2[1] + objeto2[3]:
-        colisiono = True
-        print("#########3")'''
 
 pygame.init()
 
