@@ -1,7 +1,7 @@
 import pygame
 import random
 import Moneda
-import Enemigo
+from Enemigo import Enemigo
 import Protagonista
 
 NEGRO = (0, 0, 0)
@@ -56,7 +56,7 @@ def crearbloques(cantidad):
 
 
 def crearEnemigos():
-    enemigo = Enemigo.Enemigo(imageEnemigo, dimensiones)
+    enemigo = Enemigo(imageEnemigo, dimensiones)
     listaEnemigos.add(enemigo)
     listaSprites.add(enemigo)
 
