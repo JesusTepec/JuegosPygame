@@ -7,11 +7,9 @@ ventana = {'ancho': 500, 'alto': 600}
 COLOR_FUENTE = (250, 240, 40)
 COLOR_FONDO = (13, 140, 255)
 FPS = 40
-enemigo = {'sizeMin': 10, 'sizeMax': 40, 'velocidadMin': 1, 'velocidadMax': 8}
+enemigo = {'sizeMin': 10, 'sizeMax': 40, 'velocidadMin': 1, 'velocidadMax': 4}
 
-TASANUEVOENEMIGO = 12
 TASAMOVIMIENTOJUGADOR = 5
-puntaje_maximo = 0
 
 
 def jugadorGolpeaEnemigo(rectanguloJugador, enemigos):
@@ -28,19 +26,22 @@ def dibujarTexto(texto, fuente, superficie, x, y):
     superficie.blit(objetotexto, rectangulotexto)
 
 
-def pantallaInicial(superficie):
+def pantallaInicial(superficie, titulo, mensaje):
     superficie.fill(COLOR_FONDO)
     pygame.draw.rect(superficie, [8, 5, 30], [0, ventana['ancho'] / 2 - 90, ventana['ancho'], 190])
     fuente = pygame.font.SysFont('Dimitri Swank', 48)
-    dibujarTexto('Evasor', fuente, superficie, (ventana['ancho'] / 2) - 80, (ventana['alto'] / 3))
+    x = 24 * len(titulo)
+    dibujarTexto(titulo, fuente, superficie, (ventana['ancho'] - x) / 2, (ventana['alto'] / 3))
     fuente = pygame.font.SysFont('Quesha', 46)
-    dibujarTexto('Presione una tecla para comenzar.', fuente, superficie, (ventana['ancho'] / 2) - 220, (ventana['alto'] / 3) + 100)
+    dibujarTexto(mensaje, fuente, superficie, (ventana['ancho'] / 2) - 170, (ventana['alto'] / 3) + 100)
+    pygame.display.flip()
 
 
-def dibujar_tablero(puntaje, puntaje_maximo, fuente_puntos):
-    pygame.draw.rect(superficie, [8, 5, 30], [0, 0, ventana['ancho'], 60])
-    dibujarTexto('Puntaje: %s' % (puntaje), fuente_puntos, superficie, 10, 2)
-    dibujarTexto('Puntaje Máximo: %s' % (puntaje_maximo), fuente_puntos, superficie, 10, 30)
+def dibujar_tablero(puntaje, nivel, puntaje_maximo, fuente_puntos):
+    pygame.draw.rect(superficie, [8, 5, 30], [0, 0, ventana['ancho'], 90])
+    dibujarTexto('Nivel: %s' % (nivel), fuente_puntos, superficie, 10, 2)
+    dibujarTexto('Puntaje: %s' % (puntaje), fuente_puntos, superficie, 10, 30)
+    dibujarTexto('Puntaje Máximo: %s' % (puntaje_maximo), fuente_puntos, superficie, 10, 60)
 
 
 def nuevoEnemigo(imagen_enemigo):
@@ -72,113 +73,112 @@ def detecta_direccion(evento):
         direccion = "abajo"
     return direccion
 
+
 def main():
     pygame.mixer.music.load('acrostics.wav')
-    sonidoJuegoTerminado = pygame.mixer.Sound('juegoterminado.wav')
-    imagenEnemigo = pygame.image.load('snake.png')
-    imagenJugador = pygame.image.load('parrot.png')
+    sonido_juego_terminado = pygame.mixer.Sound('juegoterminado.wav')
+    imagen_enemigo = pygame.image.load('snake.png')
+    imagen_jugador = pygame.image.load('parrot.png')
 
-    rectanguloJugador = imagenJugador.get_rect()
-    rectanguloJugador.topleft = (ventana['ancho'] / 2, ventana['alto'] - rectanguloJugador[3] - 6)
+    rectangulo_jugador = imagen_jugador.get_rect()
+    rectangulo_jugador.topleft = (ventana['ancho'] / 2, ventana['alto'] - rectangulo_jugador[3] - 6)
 
-    trucoReversa = trucoLento = False
     contador_agregar_enemigo = 0
     mover = {'arriba': [0, -5], 'abajo':[0, 5], 'izquierda': [-5, 0], 'derecha': [5, 0]}
     direccion_movimeinto = "FALSE"
     enemigos = []
     file = open("puntuacion.txt", "+r")
     puntaje = 0
+    nivel = 1
     puntaje_maximo = file.read()
+    numero_enemigos = 40
+    ultimo_puntaje = 0
     del file
+    #pygame.mixer.music.play()
     game_over = False
-    juego_inicia = False
-    salir = False
+    close = False
 
     reloj = pygame.time.Clock()
     while not game_over:
         for evento in pygame.event.get():
             if evento.type == pygame.QUIT:
                 game_over = True
-                salir = True
+                close = True
             if evento.type == KEYDOWN:
-                if not juego_inicia:
-                    juego_inicia = True
-                    pygame.mixer.music.play()
                 direccion_movimeinto = detecta_direccion(evento)
             if evento.type == KEYUP:
                 direccion_movimeinto = "FALSE"
-        if not juego_inicia:
-            pantallaInicial(superficie)
-        else:
-            # ---------------- PINCIPAL -------------------
-            if not trucoReversa and not trucoLento:
-                contador_agregar_enemigo += 1
-            if contador_agregar_enemigo == TASANUEVOENEMIGO:
-                contador_agregar_enemigo = 0
-                enemigos.append(nuevoEnemigo(imagenEnemigo))
+        contador_agregar_enemigo += 1
+        if contador_agregar_enemigo == numero_enemigos:
+            contador_agregar_enemigo = 0
+            enemigos.append(nuevoEnemigo(imagen_enemigo))
 
-            if direccion_movimeinto == "izquierda" and rectanguloJugador.left > 0:
-                rectanguloJugador.move_ip(mover[direccion_movimeinto][0], mover[direccion_movimeinto][1])
-            if direccion_movimeinto == "derecha" and rectanguloJugador.right < ventana['ancho']:
-                rectanguloJugador.move_ip(mover[direccion_movimeinto][0], mover[direccion_movimeinto][1])
-            if direccion_movimeinto == "arriba" and rectanguloJugador.top > 0:
-                rectanguloJugador.move_ip(mover[direccion_movimeinto][0], mover[direccion_movimeinto][1])
-            if direccion_movimeinto == "abajo" and rectanguloJugador.bottom < ventana['alto']:
-                rectanguloJugador.move_ip(mover[direccion_movimeinto][0], mover[direccion_movimeinto][1])
+        if direccion_movimeinto == "izquierda" and rectangulo_jugador.left > 0:
+            rectangulo_jugador.move_ip(mover[direccion_movimeinto][0], mover[direccion_movimeinto][1])
+        if direccion_movimeinto == "derecha" and rectangulo_jugador.right < ventana['ancho']:
+            rectangulo_jugador.move_ip(mover[direccion_movimeinto][0], mover[direccion_movimeinto][1])
+        if direccion_movimeinto == "arriba" and rectangulo_jugador.top > 90:
+            rectangulo_jugador.move_ip(mover[direccion_movimeinto][0], mover[direccion_movimeinto][1])
+        if direccion_movimeinto == "abajo" and rectangulo_jugador.bottom < ventana['alto']:
+            rectangulo_jugador.move_ip(mover[direccion_movimeinto][0], mover[direccion_movimeinto][1])
 
-            for e in enemigos:
-                if not trucoReversa and not trucoLento:
-                    e['rect'].move_ip(0, e['velocidad'])
-                elif trucoReversa:
-                    e['rect'].move_ip(0, -5)
-                elif trucoLento:
-                    e['rect'].move_ip(0, 1)
+        for e in enemigos:
+            e['rect'].move_ip(0, e['velocidad'])
 
-            if colision(rectanguloJugador, enemigos):
-                if puntaje > int(puntaje_maximo):
-                    file = open('puntuacion.txt', "w")
-                    puntaje_maximo = puntaje
-                    file.write(str(puntaje_maximo))
-                    del file
-                game_over = True
-                sonidoJuegoTerminado.play()
-                pygame.mixer.music.stop()
+        if colision(rectangulo_jugador, enemigos):
+            if puntaje > int(puntaje_maximo):
+                file = open('puntuacion.txt', "w")
+                puntaje_maximo = puntaje
+                file.write(str(puntaje_maximo))
+                del file
+            game_over = True
+           # sonido_juego_terminado.play()
+            pygame.mixer.music.stop()
 
-            superficie.fill(COLOR_FONDO)
+        if puntaje != 0 and (puntaje % 50) == 0 and puntaje != ultimo_puntaje:
+            nivel += 1
+            ultimo_puntaje = puntaje
+            numero_enemigos -= nivel
 
-            dibujar_tablero(puntaje, puntaje_maximo, fuente_puntos)
-            superficie.blit(imagenJugador, rectanguloJugador)
+        superficie.fill(COLOR_FONDO)
 
-            for e in enemigos[:]:
-                if e['rect'].top > ventana['alto']:
-                    enemigos.remove(e)
-                    puntaje += 1
-            for e in enemigos:
-                superficie.blit(e['superficie'], e['rect'])
+        dibujar_tablero(puntaje, nivel, puntaje_maximo, fuente_puntos)
+        superficie.blit(imagen_jugador, rectangulo_jugador)
+
+        for e in enemigos[:]:
+            if e['rect'].top > ventana['alto']:
+                enemigos.remove(e)
+                puntaje += 1
+        for e in enemigos:
+            superficie.blit(e['superficie'], e['rect'])
 
         pygame.display.flip()
         reloj.tick(60)
-    return salir
+    return close
+
 
 if __name__ == "__main__":
     pygame.init()
     superficie = pygame.display.set_mode((ventana['ancho'], ventana['alto']))
     pygame.display.set_caption('Evasor')
     fuente_puntos = pygame.font.SysFont('Impact', 20)
+    reloj = pygame.time.Clock()
     game_loop = False
-    salir = main()
-    if not salir:
-        superficie.fill(COLOR_FONDO)
-        pygame.draw.rect(superficie, [8, 5, 30], [0, ventana['ancho'] / 2 - 90, ventana['ancho'], 190])
-        fuente = pygame.font.SysFont('Dimitri Swank', 48)
-        dibujarTexto('Evasor', fuente, superficie, (ventana['ancho'] / 2) - 80, (ventana['alto'] / 3))
-        fuente = pygame.font.SysFont('Quesha', 46)
-        dibujarTexto('GAME OVER', fuente, superficie, superficie.get_rect().centerx - 92, (ventana['alto'] / 3) + 90)
-        pygame.display.flip()
-        while not game_loop:
-            for evento in pygame.event.get():
-                if evento.type == QUIT:
-                    game_loop = True
+    salir = False
+
+    pantallaInicial(superficie, "Evasor", 'Presione a para comenzar.')
+    while not game_loop:
+        for evento in pygame.event.get():
+            if evento.type == QUIT:
+                game_loop = True
+            if evento.type == KEYDOWN:
+                if evento.key == ord('a'):
+                    salir = main()
+                    if salir:
+                        game_loop = True
+                    else:
+                        pantallaInicial(superficie, "Game Over", 'Presione a para comenzar.')
+        reloj.tick(60)
     pygame.quit()
 
 '''
