@@ -1,5 +1,6 @@
 import pygame
 import random
+from sprites import *
 
 COLOR_FONDO = (40, 40, 220)
 ROJO = (180, 20, 40)
@@ -8,52 +9,6 @@ AMARILLO = (200, 200, 10)
 
 ANCHO_PANTALLA = 700
 ALTO_PANTALLA = 500
-
-
-class Bloque(pygame.sprite.Sprite):
-
-    def __init__(self, color):
-        super().__init__()
-        self.image = pygame.Surface([60, 20])
-        self.image.fill(color)
-        self.rect = self.image.get_rect()
-
-    def position(self, x, y):
-        self.rect.x = x
-        self.rect.y = y
-
-
-class Protagonista(pygame.sprite.Sprite):
-
-    def __init__(self):
-        super().__init__()
-        self.color = ROJO
-        self.image = pygame.Surface([40, 20])
-        self.image.fill(self.color)
-        self.rect = self.image.get_rect()
-
-    def update(self):
-        pos = pygame.mouse.get_pos()
-        self.rect.x = pos[0]
-
-    def change_color(self, color):
-        self.color = color
-        self.image.fill(color)
-
-    def get_color(self):
-        return self.color
-
-
-class Proyectil(pygame.sprite.Sprite):
-
-    def __init__(self, color):
-        super().__init__()
-        self.image = pygame.Surface([8, 16])
-        self.image.fill(color)
-        self.rect = self.image.get_rect()
-
-    def update(self):
-        self.rect.y -= 4
 
 
 class Juego(object):
@@ -99,13 +54,15 @@ class Juego(object):
         if not self.game_over:
             self.lista_sprites.update()
             for proyectil in self.lista_proyectiles:
-                lista_bloques_alcanzados = pygame.sprite.spritecollide(proyectil, self.lista_bloques, True)
+                lista_bloques_alcanzados = pygame.sprite.spritecollide(proyectil, self.lista_bloques, False)
 
                 for bloque in lista_bloques_alcanzados:
                     self.lista_proyectiles.remove(proyectil)
                     self.lista_sprites.remove(proyectil)
-                    self.puntuacion += 1
-                    print(self.puntuacion)
+                    if proyectil.get_color() == bloque.get_color():
+                        self.lista_sprites.remove(bloque)
+                        self.lista_bloques.remove(bloque)
+                        self.puntuacion += 1
 
                 if proyectil.rect.y < -10:
                     self.lista_proyectiles.remove(proyectil)
@@ -138,7 +95,7 @@ def main():
     pantalla = pygame.display.set_mode(dimensiones)
 
     pygame.display.set_caption(".::BREAK-BLOCK::.")
-    # pygame.mouse.set_visible(False)
+    #pygame.mouse.set_visible(False)
     game_loop = False
     reloj = pygame.time.Clock()
 

@@ -1,8 +1,6 @@
 #Ejemplo 1 - circulo cae
 import pygame
 
-
-
 # Definir Colores
 COLOR = (255, 255, 255)
 ROJO = (255, 0, 0)

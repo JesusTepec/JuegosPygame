@@ -75,8 +75,8 @@ def detecta_direccion(evento):
 
 
 def main():
-    pygame.mixer.music.load('acrostics.wav')
-    sonido_juego_terminado = pygame.mixer.Sound('juegoterminado.wav')
+    pygame.mixer.music.load('copycat.wav')
+    sonido_juego_terminado = pygame.mixer.Sound('soundLose.ogg')
     imagen_enemigo = pygame.image.load('snake.png')
     imagen_jugador = pygame.image.load('parrot.png')
 
@@ -94,7 +94,8 @@ def main():
     numero_enemigos = 40
     ultimo_puntaje = 0
     del file
-    #pygame.mixer.music.play()
+    pygame.mixer.music.set_endevent(pygame.constants.USEREVENT)
+    pygame.mixer.music.play()
     game_over = False
     close = False
 
@@ -132,7 +133,7 @@ def main():
                 file.write(str(puntaje_maximo))
                 del file
             game_over = True
-           # sonido_juego_terminado.play()
+            sonido_juego_terminado.play()
             pygame.mixer.music.stop()
 
         if puntaje != 0 and (puntaje % 50) == 0 and puntaje != ultimo_puntaje:

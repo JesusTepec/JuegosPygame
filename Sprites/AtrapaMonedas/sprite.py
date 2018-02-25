@@ -62,6 +62,7 @@ def crearEnemigos():
 
 
 def nuevo_juego():
+    pygame.mouse.set_visible(False)
     crearbloques(50)
     crearEnemigos()
     listaSprites.add(protagonista)
@@ -103,6 +104,7 @@ def main():
             listaBloques.empty()
             perdiste = True
         if perdiste:
+            pygame.mouse.set_visible(True)
             dibujarTexto(pantalla, "Game Over", [310, 300])
             if btn_jugar_click:
                 boton([390, 400], "Jugar de nuevo", True)
@@ -115,6 +117,7 @@ def main():
             sonidoEnergia.play()
             marcador += 1
         if marcador == 50:
+            pygame.mouse.set_visible(True)
             dibujarTexto(pantalla, "You Win", [330, 300])
             listaSprites.empty()
             listaBloques.empty()
@@ -139,7 +142,6 @@ pygame.init()
 dimensiones = [900, 700]
 
 pantalla = pygame.display.set_mode(dimensiones)
-# pygame.mouse.set_visible(False);
 imagePersonaje = "../image/planet-3.png"
 imageEnergia = "../image/powerupYellow_bolt.png"
 imageEnemigo = "../image/p2.png"
