@@ -7,13 +7,12 @@ class Moneda(pygame.sprite.Sprite):
 
     def __init__(self, image, limites):
         super().__init__()
-        self.image = pygame.transform.scale(pygame.image.load(image), [20, 20]).convert()
-        self.image.set_colorkey(NEGRO)
+        self.image = pygame.transform.scale(pygame.image.load(image), [20, 20])
         self.rect = self.image.get_rect()
-        self.limite_izquierdo = 10
-        self.limite_derecho = limites[0]
-        self.limite_superior = 10
-        self.limite_inferior = limites[1]
+        self.limite_izquierdo = 8
+        self.limite_derecho = limites[0] - 8
+        self.limite_superior = 8
+        self.limite_inferior = limites[1] - 8
         self.cambio_x = 0
         self.cambio_y = 0
 

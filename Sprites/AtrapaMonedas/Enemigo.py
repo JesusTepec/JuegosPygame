@@ -9,11 +9,10 @@ class Enemigo(pygame.sprite.Sprite):
 
     def __init__(self, image, limites):
         super().__init__()
-        self.image = pygame.image.load(image).convert()
-        self.image.set_colorkey(NEGRO)
+        self.image = pygame.image.load(image)
         self.rect = self.image.get_rect()
-        self.centro_x = random.randrange(50, limites[0] - 200)
-        self.centro_y = random.randrange(50, limites[1] - 200)
+        self.centro_x = 50
+        self.centro_y = 50
         self.angulo = random.random() * 2 * math.pi
         self.radio = random.randrange(10, 100)
         self.velocidad = 0.05

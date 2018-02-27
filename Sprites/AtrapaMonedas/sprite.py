@@ -12,7 +12,7 @@ COLOR_FUENTE = (255, 122, 88)
 FONDO = (2, 8, 34)
 
 
-def dibujarTexto(screen, texto, pos):
+def dibujar_texto(screen, texto, pos):
     fuente = pygame.font.SysFont('Barber Street_PersonalUseOnly', 100)
     text = fuente.render(texto, 1, COLOR_FUENTE)
     screen.blit(text, pos)
@@ -32,10 +32,9 @@ def colisiono(mouse, objeto):
 
 def boton(pos, texto, press):
     if press:
-        boton_normal = pygame.image.load("../image/buttonLong_beige_pressed.png").convert()
+        boton_normal = pygame.image.load("../image/buttonLong_beige_pressed.png")
     else:
-        boton_normal = pygame.image.load("../image/buttonLong_beige.png").convert()
-    boton_normal.set_colorkey(NEGRO)
+        boton_normal = pygame.image.load("../image/buttonLong_beige.png")
     picture = pygame.transform.scale(boton_normal, [235, 50])
     pantalla.blit(picture, pos)
     fuente = pygame.font.SysFont('Impact', 35)
@@ -44,27 +43,28 @@ def boton(pos, texto, press):
     return [pos[0], pos[1], 235, 50]
 
 
-def crearbloques(cantidad):
+def crear_energia(cantidad):
     for i in range(cantidad):
         moneda = Moneda.Moneda(imageEnergia, dimensiones)
-        moneda.rect.x = random.randrange(dimensiones[0])
-        moneda.rect.y = random.randrange(dimensiones[1])
-        moneda.cambio_x = random.randrange(-2, 7)
-        moneda.cambio_y = random.randrange(-2, 7)
+        moneda.rect.x = random.randrange(12, dimensiones[0] - 12)
+        moneda.rect.y = random.randrange(12, dimensiones[1] - 12)
+        moneda.cambio_x = random.randrange(-4, 6)
+        moneda.cambio_y = random.randrange(-4, 6)
         listaBloques.add(moneda)
         listaSprites.add(moneda)
 
 
-def crearEnemigos():
-    enemigo = Enemigo(imageEnemigo, dimensiones)
-    listaEnemigos.add(enemigo)
-    listaSprites.add(enemigo)
+def crear_enemigos(cantidad):
+    for i in range(cantidad):
+        enemigo = Enemigo(imageEnemigo, dimensiones)
+        listaEnemigos.add(enemigo)
+        listaSprites.add(enemigo)
 
 
-def nuevo_juego():
+def nuevo_juego(nivel):
     pygame.mouse.set_visible(False)
-    crearbloques(50)
-    crearEnemigos()
+    crear_energia(50)
+    crear_enemigos(nivel)
     listaSprites.add(protagonista)
 
 
@@ -73,12 +73,14 @@ def main():
 
     marcador = 0
     perdiste = 0
+    nivel = 0
     btnJugar = None
 
-    nuevo_juego()
+    nuevo_juego(nivel)
     btn_jugar_click = False
 
     pygame.mouse.set_pos(dimensiones[0] - 20, dimensiones[1] - 20)
+    pygame.mixer.music.set_endevent(pygame.constants.USEREVENT)
     pygame.mixer.music.play()
     while not game_over:
         for evento in pygame.event.get():
@@ -102,13 +104,15 @@ def main():
         if pygame.sprite.spritecollide(protagonista, listaEnemigos, True):
             listaSprites.empty()
             listaBloques.empty()
+            listaEnemigos.empty()
             perdiste = True
         if perdiste:
             pygame.mouse.set_visible(True)
-            dibujarTexto(pantalla, "Game Over", [310, 300])
+            dibujar_texto(pantalla, "Game Over", [310, 300])
             if btn_jugar_click:
                 boton([390, 400], "Jugar de nuevo", True)
-                nuevo_juego()
+                nivel = 0
+                nuevo_juego(nivel)
                 perdiste = False
                 marcador = 0
             else:
@@ -118,16 +122,17 @@ def main():
             marcador += 1
         if marcador == 50:
             pygame.mouse.set_visible(True)
-            dibujarTexto(pantalla, "You Win", [330, 300])
+            dibujar_texto(pantalla, "Nivel " + niveles[nivel], [330, 300])
             listaSprites.empty()
             listaBloques.empty()
             listaEnemigos.empty()
             if btn_jugar_click:
-                boton([390, 400], "Jugar de nuevo", True)
-                nuevo_juego()
+                nivel += 1
+                boton([390, 410], "Comenzar nivel", True)
+                nuevo_juego(nivel)
                 marcador = 0
             else:
-                btnJugar = boton([390, 400], "Jugar de nuevo", False)
+                btnJugar = boton([390, 410], "Comenzar nivel", False)
 
         listaBloques.update()
         listaEnemigos.update()
@@ -144,9 +149,10 @@ dimensiones = [900, 700]
 pantalla = pygame.display.set_mode(dimensiones)
 imagePersonaje = "../image/planet-3.png"
 imageEnergia = "../image/powerupYellow_bolt.png"
-imageEnemigo = "../image/p2.png"
+imageEnemigo = "../image/asteroid1.png"
 sonidoEnergia = pygame.mixer.Sound("../sound/coin2.wav")
 pygame.mixer.music.load('../sound/Nowhere_Land.mp3')
+niveles = ['dos', 'tres', 'cuatro', 'cinco']
 listaBloques = pygame.sprite.Group()
 listaSprites = pygame.sprite.Group()
 listaEnemigos = pygame.sprite.Group()
@@ -165,12 +171,12 @@ while not game_over:
             btn_jugar_click = False
 
     pantalla.fill(FONDO)
-    dibujarTexto(pantalla, "Recolector Espacial", [170, 300])
+    dibujar_texto(pantalla, "Recolector Espacial", [170, 300])
     pygame.draw.rect(pantalla, [200, 240, 30], [10, 10, dimensiones[0] - 20, dimensiones[1] - 20], 10)
     if btn_jugar_click:
-        boton([350, 450], "   Nuevo Juego", True)
+        btnJugar = boton([350, 450], "   Nuevo Juego", True)
         main()
-        break
+        game_over = True
     else:
         btnJugar = boton([350, 450], "   Nuevo Juego", False)
     reloj.tick(60)
