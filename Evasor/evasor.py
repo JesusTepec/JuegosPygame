@@ -5,7 +5,8 @@ from pygame.locals import *
 
 ventana = {'ancho': 500, 'alto': 600}
 COLOR_FUENTE = (250, 240, 40)
-COLOR_FONDO = (13, 140, 255)
+#COLOR_FONDO = (13, 140, 255)
+COLOR_FONDO = (72, 232, 55)
 FPS = 40
 enemigo = {'sizeMin': 10, 'sizeMax': 40, 'velocidadMin': 1, 'velocidadMax': 4}
 
@@ -38,7 +39,7 @@ def pantallaInicial(superficie, titulo, mensaje):
 
 
 def dibujar_tablero(puntaje, nivel, puntaje_maximo, fuente_puntos):
-    pygame.draw.rect(superficie, [8, 5, 30], [0, 0, ventana['ancho'], 90])
+    pygame.draw.rect(superficie, [18, 15, 40], [0, 0, ventana['ancho'], 90])
     dibujarTexto('Nivel: %s' % (nivel), fuente_puntos, superficie, 10, 2)
     dibujarTexto('Puntaje: %s' % (puntaje), fuente_puntos, superficie, 10, 30)
     dibujarTexto('Puntaje Máximo: %s' % (puntaje_maximo), fuente_puntos, superficie, 10, 60)
@@ -76,9 +77,10 @@ def detecta_direccion(evento):
 
 def main():
     pygame.mixer.music.load('copycat.wav')
-    sonido_juego_terminado = pygame.mixer.Sound('soundLose.ogg')
+    sonido_juego_terminado = pygame.mixer.Sound('Lose4.wav')
     imagen_enemigo = pygame.image.load('snake.png')
     imagen_jugador = pygame.image.load('parrot.png')
+    imagen_fondo = pygame.transform.scale(pygame.image.load('BG.jpg'), (640, 680))
 
     rectangulo_jugador = imagen_jugador.get_rect()
     rectangulo_jugador.topleft = (ventana['ancho'] / 2, ventana['alto'] - rectangulo_jugador[3] - 6)
@@ -141,7 +143,8 @@ def main():
             ultimo_puntaje = puntaje
             numero_enemigos -= nivel
 
-        superficie.fill(COLOR_FONDO)
+       # superficie.fill(COLOR_FONDO)
+        superficie.blit(imagen_fondo, (0, 90), (100, 20, ventana['ancho'], 510))
 
         dibujar_tablero(puntaje, nivel, puntaje_maximo, fuente_puntos)
         superficie.blit(imagen_jugador, rectangulo_jugador)
