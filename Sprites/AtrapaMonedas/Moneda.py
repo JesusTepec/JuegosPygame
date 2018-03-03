@@ -1,4 +1,5 @@
 import pygame
+import random
 
 NEGRO = (0, 0, 0)
 
@@ -7,7 +8,7 @@ class Moneda(pygame.sprite.Sprite):
 
     def __init__(self, image, limites):
         super().__init__()
-        self.image = pygame.transform.scale(pygame.image.load(image), [20, 20])
+        self.image = pygame.image.load(image[random.randint(0, 2)])
         self.rect = self.image.get_rect()
         self.limite_izquierdo = 8
         self.limite_derecho = limites[0] - 8

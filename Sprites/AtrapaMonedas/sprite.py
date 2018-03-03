@@ -94,7 +94,8 @@ def main():
             if evento.type == pygame.MOUSEBUTTONUP:
                 btn_jugar_click = False
 
-        pantalla.fill(FONDO)
+      #  pantalla.fill(FONDO)
+        pantalla.blit(imagen_fondo, (0, 0))
         pos = pygame.mouse.get_pos()
 
         protagonista.rect.x = pos[0]
@@ -147,9 +148,10 @@ pygame.init()
 dimensiones = [900, 700]
 
 pantalla = pygame.display.set_mode(dimensiones)
-imagePersonaje = "../image/planet-3.png"
-imageEnergia = "../image/powerupYellow_bolt.png"
+imagePersonaje = "../image/ufoblue.png"
+imageEnergia = ["../image/spaceParts_046.png", "../image/spaceParts_043.png", "../image/spaceParts_085.png"]
 imageEnemigo = "../image/asteroid1.png"
+imagen_fondo = pygame.image.load("../image/back_.jpg")
 sonidoEnergia = pygame.mixer.Sound("../sound/coin2.wav")
 pygame.mixer.music.load('../sound/Nowhere_Land.mp3')
 niveles = ['dos', 'tres', 'cuatro', 'cinco']
@@ -170,7 +172,7 @@ while not game_over:
         if evento.type == pygame.MOUSEBUTTONUP:
             btn_jugar_click = False
 
-    pantalla.fill(FONDO)
+    pantalla.blit(imagen_fondo, (0, 0))
     dibujar_texto(pantalla, "Recolector Espacial", [170, 300])
     pygame.draw.rect(pantalla, [200, 240, 30], [10, 10, dimensiones[0] - 20, dimensiones[1] - 20], 10)
     if btn_jugar_click:
@@ -183,3 +185,11 @@ while not game_over:
     pygame.display.flip()
 
 pygame.quit()
+
+
+'''
+https://opengameart.org/content/space-background-1
+Space background
+Author: 
+Westbeam
+'''

@@ -11,7 +11,7 @@ def colisiono(mouse, objeto):
 
 
 def reproducirSonido(audio):
-    audio.play()
+    audio.play(1)
 
 
 def buscarPulsado(posMouse, listaRects):

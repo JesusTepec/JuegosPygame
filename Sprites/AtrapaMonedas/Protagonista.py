@@ -7,6 +7,8 @@ class Protagonista(pygame.sprite.Sprite):
 
     def __init__(self, image):
         super().__init__()
-        self.image = pygame.transform.scale(pygame.image.load(image), [50, 50])
+        self.width = 90
+        self.height = 90
+        self.image = pygame.image.load(image)
         self.rect = self.image.get_rect()
 
